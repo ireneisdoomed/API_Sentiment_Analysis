@@ -3,7 +3,7 @@ nltk.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from src.mongo import *
 import numpy as np
-import wordcloud
+from wordcloud import wordcloud
 
 def polarityScore(message):
     '''
@@ -30,7 +30,7 @@ def calculateScore(chatName):
     '''
     Returns the average of the compounds component of all messages for a given chat
     '''
-    chatScore(chatName)
+    content = chatScore(chatName)
     compounds = [e["value"] for e in content]
     return np.mean(compounds)
 
@@ -51,12 +51,11 @@ def wordCloud(chatName):
     '''
     messages = getMessages(chatName)
     allWords = " ".join(messages)
-    wordcloud = WordCloud(width = 1000, height = 500).generate(allWords)
+    wrdcld = wordcloud(width = 1000, height = 500).generate(allWords)
     plt.figure(figsize=(15,8))
-    plt.imshow(wordcloud)
+    plt.imshow(wrdcld)
     plt.axis("off")
     plt.savefig("wordcloud"+".png", bbox_inches='tight')
     plt.show()
     plt.close()
-    return None
 #send_from_directory

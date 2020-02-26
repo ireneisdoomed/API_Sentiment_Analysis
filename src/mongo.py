@@ -20,7 +20,7 @@ def createUser(name):
     user = {"username": str(endpoint)}
     db, coll = connection("sentiment", "users")
 
-    allUsers = [e["username"] for e in list(db.coll.find())]
+    allUsers = [e["username"] for e in list(db["users"].find())]
     if endpoint in allUsers:
         return "Error: This user is already in the database. Please try again."
     else:
@@ -72,7 +72,9 @@ def addUser():
 
     coll.update({"chatName": chatName},
                 {"$addToSet":{
-                    "usernames": usernames}
+                    "usernames": {
+                        "name": usernames}
+                    }
                 })
 
     return "User {} has been succesfully added to the {} chat.".format(usernames, chatName)
